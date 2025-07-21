@@ -20,7 +20,10 @@ export interface MonthDay {
   isCurrentMonth: boolean;
 }
 
-export const DayFormat = "YYYY-MM-DD";
+const ORDER_ENDPOINT =
+  process.env.EXPO_PUBLIC_ORDER_API_URL || "https://example.com/order";
+
+export const DayFormat = "iso-short";
 
 export default function MonthView({
   from,
@@ -58,7 +61,7 @@ export default function MonthView({
     currentDay.isBefore(lastSunday) ||
     currentDay.isSame(lastSunday, "day")
   ) {
-    const dateString = currentDay.format("iso-short");
+    const dateString = currentDay.format(DayFormat);
 
     days.push({
       day: currentDay.format("{date}").padStart(2, "0"),
@@ -101,7 +104,7 @@ export default function MonthView({
     if (!selectedDay) return;
 
     try {
-      const response = await fetch("https://example.com/order", {
+      const response = await fetch(ORDER_ENDPOINT, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -136,6 +139,8 @@ export default function MonthView({
         <Pressable
           style={[styles.navButton, { backgroundColor: backgroundColor }]}
           onPress={goToPreviousMonth}
+          accessibilityLabel="Previous month"
+          accessibilityRole="button"
         >
           <ThemedText style={styles.navButtonText}>‹</ThemedText>
         </Pressable>
@@ -149,6 +154,8 @@ export default function MonthView({
         <Pressable
           style={[styles.navButton, { backgroundColor: backgroundColor }]}
           onPress={goToNextMonth}
+          accessibilityLabel="Next month"
+          accessibilityRole="button"
         >
           <ThemedText style={styles.navButtonText}>›</ThemedText>
         </Pressable>
@@ -204,6 +211,8 @@ export default function MonthView({
             <Pressable
               style={[styles.orderButton, { backgroundColor: backgroundColor }]}
               onPress={handleOrder}
+              accessibilityLabel="Place order"
+              accessibilityRole="button"
             >
               <ThemedText style={styles.orderButtonText}>Order</ThemedText>
             </Pressable>

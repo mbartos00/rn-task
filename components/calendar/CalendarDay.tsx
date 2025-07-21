@@ -28,7 +28,6 @@ export default function CalendarDay({
   const backgroundColor = useThemeColor({}, "background");
   const textColor = useThemeColor({}, "text");
   const selectedTextColor = useThemeColor({ dark: "dark" }, "text");
-  const iconColor = useThemeColor({}, "icon");
 
   return (
     <View
@@ -63,14 +62,12 @@ export default function CalendarDay({
                 styles.dayText,
                 { color: textColor },
                 today && { fontWeight: "bold", color: primaryColor },
-                !isCurrentMonth && { color: iconColor },
                 isSelected && { color: selectedTextColor, fontWeight: "bold" },
               ]}
             >
               {day}
             </ThemedText>
           )}
-
           {/* Status indicators */}
           {order && isCurrentMonth && (
             <View style={[styles.status, styles.ordered]}>
